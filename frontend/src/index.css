@@ -33,3 +33,9 @@ h3 {
 .rating span {
   margin: 0.1rem;
 }
+
+.form-inline {
+  width: 40%;
+  /* height: 35px; */
+  display: flex;
+}
