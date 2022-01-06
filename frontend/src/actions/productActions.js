@@ -24,13 +24,13 @@ import {
 import axios from 'axios'
 
 export const listProducts =
-  (keyword = '', pageNumber = '') =>
+  (keyword = '', pageNumber = '', price = [0, 2500]) =>
   async (dispatch) => {
     try {
       dispatch({ type: PRODUCT_LIST_REQUEST })
 
       const { data } = await axios.get(
-        `/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
+        `/api/products?keyword=${keyword}&pageNumber=${pageNumber}}`
       )
 
       dispatch({
@@ -117,7 +117,7 @@ export const createProduct = () => async (dispatch, getState) => {
       },
     }
 
-    const data = await axios.post(`/api/products`, {}, config)
+    const {data} = await axios.post(`/api/products`, {}, config)
 
     dispatch({
       type: PRODUCT_CREATE_SUCCESS,

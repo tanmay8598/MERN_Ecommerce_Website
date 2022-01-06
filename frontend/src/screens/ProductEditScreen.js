@@ -25,6 +25,10 @@ const ProductEditScreen = ({ match, history }) => {
 
   const productDetails = useSelector((state) => state.productDetails)
   const { loading, error, product } = productDetails
+  //
+  
+  
+  //
 
   const productUpdate = useSelector((state) => state.productUpdate)
   const {
@@ -171,6 +175,7 @@ const ProductEditScreen = ({ match, history }) => {
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               ></Form.Control>
+              
             </Form.Group>
 
             <Form.Group controlId='description'>
