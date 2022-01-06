@@ -41,6 +41,8 @@ const PlaceOrderScreen = ({ history }) => {
       createOrder({
         orderItems: cart.cartItems,
         shippingAddress: cart.shippingAddress,
+        mobileNumber: cart.mobileNumber,
+        email: cart.email,
         paymentMethod: cart.paymentMethod,
         itemsPrice: cart.itemsPrice,
         shippingPrice: cart.shippingPrice,

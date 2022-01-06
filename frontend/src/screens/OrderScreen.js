@@ -19,12 +19,11 @@ import {
 const OrderScreen = ({ match }) => {
   const orderId = match.params.id
 
-  const [sdkReady, setSdkReady] = useState(false)
-
   const dispatch = useDispatch()
 
   const orderDetails = useSelector((state) => state.orderDetails)
   const { order, loading, error } = orderDetails
+  // console.log(order)
 
   const orderPay = useSelector((state) => state.orderPay)
   const { loading: loadingPay, success: successPay } = orderPay
@@ -47,37 +46,12 @@ const OrderScreen = ({ match }) => {
   }
 
   useEffect(() => {
-    // const addPayPalScript = async () => {
-    //   const { data: clientId } = await axios.get('/api/config/paypal')
-    //   const script = document.createElement('script')
-    //   script.type = 'text/javascript'
-    //   script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`
-    //   script.async = true
-    //   script.onload = () => {
-    //     setSdkReady(true)
-    //   }
-    //   document.body.appendChild(script)
-    // }
-
     if (!order || successPay || successDeliver) {
       dispatch({ type: ORDER_PAY_RESET })
       dispatch({ type: ORDER_DELIVER_RESET })
       dispatch(getOrderDetails(orderId))
     }
-    // } else if (!order.isPaid) {
-    //   if (!window.paypal) {
-    //     addPayPalScript()
-    //   } else {
-    //     setSdkReady(true)
-    //   }
-    // }
   }, [dispatch, orderId, successPay, successDeliver, order])
-
-  const successPaymentHandler = () => {
-    // console.log(paymentResult)
-    order.isPaid = true
-    dispatch(payOrder(orderId))
-  }
 
   const deliverHandler = () => {
     dispatch(deliverOrder(order))
@@ -100,7 +74,13 @@ const OrderScreen = ({ match }) => {
               </p>
               <p>
                 <strong>Email: </strong>{' '}
-                <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
+                <a href={`mailto:${order.shippingAddress.email}`}>
+                  {order.shippingAddress.email}
+                </a>
+              </p>
+              <p>
+                <strong>Mobile Number: </strong>{' '}
+                <a>{order.shippingAddress.mobileNumber}</a>
               </p>
               <p>
                 <strong>Address:</strong>
@@ -116,19 +96,6 @@ const OrderScreen = ({ match }) => {
                 <Message variant='danger'>Not Delivered</Message>
               )}
             </ListGroup.Item>
-
-            {/* <ListGroup.Item>
-              <h2>Payment Method</h2>
-              <p>
-                <strong>Method: </strong>
-                {order.paymentMethod}
-              </p>
-              {order.isPaid ? (
-                <Message variant='success'>Paid on {order.paidAt}</Message>
-              ) : (
-                <Message variant='danger'>Not Paid</Message>
-              )}
-            </ListGroup.Item> */}
 
             <ListGroup.Item>
               <h2>Order Items</h2>
@@ -193,18 +160,7 @@ const OrderScreen = ({ match }) => {
                   <Col>₹{order.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
-              {/* {!order.isPaid && (
-                <ListGroup.Item>
-                  {loadingPay && <Loader />}
-                  <Button
-                    type='button'
-                    className='btn btn-block'
-                    onClick={successPaymentHandler}
-                  >
-                    COD
-                  </Button>
-                </ListGroup.Item>
-              )} */}
+
               {loadingDeliver && <Loader />}
               {userInfo.isAdmin && !order.isDelivered && (
                 <ListGroup.Item>
