@@ -28,6 +28,10 @@ const orderSchema = mongoose.Schema(
       mobileNumber: { type: Number, required: true },
       email: { type: String, required: true },
     },
+    emailDelivery: {
+      type: String,
+      
+    },
     paymentMethod: {
       type: String,
       required: true,

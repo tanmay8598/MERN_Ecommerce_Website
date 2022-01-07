@@ -29,9 +29,40 @@ const PlaceOrderScreen = ({ history }) => {
   const orderCreate = useSelector((state) => state.orderCreate)
   const { order, success, error } = orderCreate
 
+ 
+  //
+ 
+
   useEffect(() => {
+    
     if (success) {
       history.push(`/order/${order._id}`)
+
+      const mailto = async() => {
+        
+        let details = {
+          orderID: order._id,
+          name: order.user,
+          orderItems: cart.cartItems,
+          shippingPrice: cart.shippingPrice,
+          totalPrice: cart.totalPrice,
+          shippingAddress: cart.shippingAddress,
+          paymentMethod: 'Cash on Delivery'
+
+
+        }
+        // console.log(details.orderItems);
+        let response = await fetch(`/api/email`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(details),
+        })
+        let result = await response.json()
+        alert(result.status)
+      }
+      mailto()
     }
     // eslint-disable-next-line
   }, [history, success])
@@ -50,6 +81,7 @@ const PlaceOrderScreen = ({ history }) => {
         totalPrice: cart.totalPrice,
       })
     )
+    
   }
 
   return (
